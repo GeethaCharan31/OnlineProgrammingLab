@@ -1,0 +1,18 @@
+OnlineProgrammingLab
+
+Python 3.9 is being used
+Virtual Environment is created and then django is installed
+" pip install django "
+
+Use "django-admin" to check if django is installed, it should give the list of commands.
+
+Now to create django project -- " django-admin startproject OnlineProgrammingLab . "
+In the command '.' is used to remove redundancy as django creates folder inside folder by default
+This will create manage.py and OnlineProgrammingLab folder
+
+manage.py is the wrapper around django-admin so from now on we use manage.py inplace of django-admin
+so because of this we use " python manage.py runserver " to run the project instead of
+" django-admin runserver "
+
+Once we run the command we get http://127.0.0.1:8000 where the website is running , we should see the
+django default page

@@ -1,5 +1,9 @@
 OnlineProgrammingLab
 
+-----------------------------------------------------------------------------
+Starting Project
+--------------------------------------------------------------------------------
+
 Python 3.9 is being used, Pycharm IDE
 Project,Virtual Environment is created and then django is installed
 " pip install django "
@@ -18,6 +22,8 @@ Once we run the command we get http://127.0.0.1:8000 where the website is runnin
 django default page
 
 ----------------------------------------------------------------------------------
+app creation and urls.py config and simple views creation
+---------------------------------------------------------------------------------
 
 To create an app inside django-project we use
 " python manage.py startapp APP_NAME "
@@ -39,4 +45,49 @@ To do this we add
 
 Everytime we add a view we should add corresponding url to base/urls.py
 and everytime we create new app that app.urls should be included into the project-urls.py
+
+
+-----------------------------------------------------------------
+Adding Templates -- Html files
+-----------------------------------------------------------------
+create a folder to store all html files
+(we created it as templates)
+for django to know about this templates folder we goto projects/settings.py and in TEMPLATES>DIR we add
+path to this folder
+" BASE_DIR / "templates" " inside square brackets of DIR
+
+create the html file a/c to need. Here first we are creating home.html
+
+and in views to trigger these templates we use render(request,"home.html")
+
+
+
+------------------------------------------------------------------
+Template Inheritence
+-----------------------------------------------------------------
+Lets us create a parent template which will act as a wrapper for all the other templates
+created -- "main.html" which will act as parent
+
+Once created we create blocks in main.html . these blocks act as placeholders
+
+Example in body of main.html we add
+{% block content %}
+
+{% end block %}
+
+So now we can home.html will simply become
+        {% extends 'main.html' %}   --- extends feature
+        {% block content %}
+            <h1>HOME PAGE</h1>
+        {% endblock %}
+
+There is also a include feature. For example navbar.html can be created seperately and included into
+main.html using  {% include 'navbar.html' %}
+
+----------------------------------------------------------------------
+Template Variables,tags
+-----------------------------------------------------------
+To add variables we use {{ variable_name }}
+
+to use code in html we use {%   %}
 

@@ -1,7 +1,7 @@
 OnlineProgrammingLab
 
-Python 3.9 is being used
-Virtual Environment is created and then django is installed
+Python 3.9 is being used, Pycharm IDE
+Project,Virtual Environment is created and then django is installed
 " pip install django "
 
 Use "django-admin" to check if django is installed, it should give the list of commands.
@@ -16,3 +16,27 @@ so because of this we use " python manage.py runserver " to run the project inst
 
 Once we run the command we get http://127.0.0.1:8000 where the website is running , we should see the
 django default page
+
+----------------------------------------------------------------------------------
+
+To create an app inside django-project we use
+" python manage.py startapp APP_NAME "
+Now to connect this app to our django project we go settings.py and add our app there
+i.e in ALLOWED_APPS we add new enter 'base.apps.BaseConfig' or simply 'base'
+
+Now we create an urls.py for our app as we cannot call our views from the project urls.py
+
+Simple View Example:
+                        def home(request):
+                            return HttpResponse("Home Page")
+this view is triggered at starting so we add to base/url.py
+                        path('', views.home, name="home"),
+
+we write functions in views which are triggered by urls -- These urls config is present in base/urls.py
+now we config the base/urls.py to the project-urls.py
+To do this we add
+" path('',include('base.urls')), " to the project-urls.py
+
+Everytime we add a view we should add corresponding url to base/urls.py
+and everytime we create new app that app.urls should be included into the project-urls.py
+

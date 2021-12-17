@@ -1,7 +1,7 @@
 OnlineProgrammingLab
 
 -----------------------------------------------------------------------------
-Starting Project
+1-Starting Project
 --------------------------------------------------------------------------------
 
 Python 3.9 is being used, Pycharm IDE
@@ -22,7 +22,7 @@ Once we run the command we get http://127.0.0.1:8000 where the website is runnin
 django default page
 
 ----------------------------------------------------------------------------------
-app creation and urls.py config and simple views creation
+2-app creation and urls.py config and simple views creation
 ---------------------------------------------------------------------------------
 
 To create an app inside django-project we use
@@ -48,7 +48,7 @@ and everytime we create new app that app.urls should be included into the projec
 
 
 -----------------------------------------------------------------
-Adding Templates -- Html files
+3-Adding Templates -- Html files
 -----------------------------------------------------------------
 create a folder to store all html files
 (we created it as templates)
@@ -63,7 +63,7 @@ and in views to trigger these templates we use render(request,"home.html")
 
 
 ------------------------------------------------------------------
-Template Inheritence
+4-Template Inheritence
 -----------------------------------------------------------------
 Lets us create a parent template which will act as a wrapper for all the other templates
 created -- "main.html" which will act as parent
@@ -85,9 +85,42 @@ There is also a include feature. For example navbar.html can be created seperate
 main.html using  {% include 'navbar.html' %}
 
 ----------------------------------------------------------------------
-Template Variables,tags
------------------------------------------------------------
+5-Template Variables,tags
+---------------------------------------------------------------------
 To add variables we use {{ variable_name }}
 
 to use code in html we use {%   %}
+
+----------------------------------------------------------------------
+6-Authentication
+-----------------------------------------------------------------------
+To create superuser we use " python manage.py createsuperuser "
+apply makemigrations and migrate if any error
+
+A new app authentication is created to deal with all the login/signup stuff
+as we created a new app configure urls and other as mentioned above(2)
+
+views,urls and templates are created for auth-app
+
+----------------------------------------------------------------------
+7-Login Page and Signup Basic
+-------------------------------------------------------------------------
+Login Page -- https://codepen.io/ModernProject/pen/MMJPBr
+
+htmls are added in templates folder
+css are added in static folder (Images are also added in static)
+
+To configure static folder we go to settings and add
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR,'static'),
+]
+
+now to link stylesheet we load static first and then link the css . it looks like this
+
+{% load static %}
+  <link rel="stylesheet" href="{% static 'YOUR_STYLESHEET_PATH_HERE' %}">
+
+and restart the server to see changes
+
+---------------------------------------------------------------------------------
 

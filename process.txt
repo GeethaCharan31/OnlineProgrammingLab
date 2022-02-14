@@ -120,7 +120,16 @@ now to link stylesheet we load static first and then link the css . it looks lik
 {% load static %}
   <link rel="stylesheet" href="{% static 'YOUR_STYLESHEET_PATH_HERE' %}">
 
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles_login.css' %}">
+
 and restart the server to see changes
 
 ---------------------------------------------------------------------------------
 
+8-PIP FREEZE REQUIREMENTS
+-------------------------------------------------------------------------------
+pip freeze > requirements.txt
+
+
+----------------------------------------------------------------------------------

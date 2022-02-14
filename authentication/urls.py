@@ -2,6 +2,8 @@ from django.urls import path
 from . import views  # importing  views of the app-authentication
 
 urlpatterns = [
-    path('', views.login, name="login"),  # urls
-    path('signup/', views.signup, name="signup"),
+    path('', views.index, name="index"),  # urls
+    path('login/', views.login, name="login"),
+    path('register/', views.register, name="register"),
+    path('logout/', views.logout, name="logout"),
 ]

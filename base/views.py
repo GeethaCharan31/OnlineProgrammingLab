@@ -22,3 +22,7 @@ def question(request, pk, pk2):
     question = Question.objects.get(id=pk2)
     context = {'question': question}
     return render(request, "question.html", context)
+
+
+def form(request):
+    return render(request, "form.html")

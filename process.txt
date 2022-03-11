@@ -137,3 +137,37 @@ pip freeze > requirements.txt
 -------------------------------------------------------------------------------------
 Following GFG tutorial
 https://www.youtube.com/watch?v=1UvTNMH7zDo
+
+---------------------------------------------------------------------------------
+10. Models (Databases Tables)
+-------------------------------------------------------------------------------
+
+Each table is a python class
+Example:  class Table(models.Model):
+and attributes of the table will look like this
+
+class Table(models.Model):
+    attribute1=models.CharField();
+    attribute2=models.CharField();
+    attribute3=models.CharField();
+
+After a new model is built we habe to perform migrations
+
+python manage.py makemigrations
+python manage.py migrate
+
+We also need to register the Model in admin.py file
+
+from .models import Room
+admin.site.register(Room)
+
+Django provides a model manager to manage the queries that are to be performed on the MODELS
+
+queryset=ModelName.objects.all()                          ----> complete model
+                          .get(attribute='value')         ----> single
+                          .filter(attribute='value')
+                          .filter(attribute__startswith='value')
+                          .filter(attribute__contains='value')     etc;
+                          .exclude()
+                          .filter().order_by('value1','value2')
+

@@ -1,12 +1,22 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-
+from .models import Room
 
 # Create your views here.
 
+"""rooms = [
+    {'id': 1, 'name': 'C LAB'},
+    {'id': 2, 'name': 'C++ LAB'},
+    {'id': 3, 'name': 'C# LAB'},
+]"""
+
+
 def home(request):
-    return render(request, "home.html")
+    rooms = Room.objects.all()
+    context = {'rooms': rooms}
+    return render(request, "home.html", context)
 
 
-def second(request):
-    return HttpResponse("Second page")
+def room(request, pk):
+    room = Room.objects.get(id=pk)
+    context = {'room': room}
+    return render(request, "room.html", context)

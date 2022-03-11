@@ -1,14 +1,8 @@
 from django.shortcuts import render
-from .models import Room
+from .models import Room, Question
+
 
 # Create your views here.
-
-"""rooms = [
-    {'id': 1, 'name': 'C LAB'},
-    {'id': 2, 'name': 'C++ LAB'},
-    {'id': 3, 'name': 'C# LAB'},
-]"""
-
 
 def home(request):
     rooms = Room.objects.all()
@@ -18,5 +12,13 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    context = {'room': room}
+    questions = Question.objects.filter(room=pk)
+    context = {'room': room, 'questions': questions}
+
     return render(request, "room.html", context)
+
+
+def question(request, pk, pk2):
+    question = Question.objects.get(id=pk2)
+    context = {'question': question}
+    return render(request, "question.html", context)

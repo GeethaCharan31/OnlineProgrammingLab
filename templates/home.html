@@ -9,7 +9,12 @@
     <div>
         {% for room in rooms %}
         <div>
-            <h4>{{room.id}} -- <a href="/room/{{room.id}}">{{room.name}}</a></h4>
+            <h3>HOST : @{{room.host.username}}</h3>
+            <h4>{{room.id}} -- <a href="/room/{{room.id}}">{{room.name}}</a>
+                    --<a href="/update_room/{{room.id}}">EditRoom</a>
+                --<a href="/delete_room/{{room.id}}">DeleteRoom</a>
+            </h4>
+            <hr>
         </div>
         {% endfor %}
     </div>

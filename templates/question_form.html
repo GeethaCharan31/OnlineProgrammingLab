@@ -2,12 +2,12 @@
 
 {% block content %}
 
-CREATE ROOM and QUESTIONS FORM
+CREATE QUESTIONS FORM
 <div>
     <form method="POST" action="">
         {% csrf_token %}
         {{form.as_p}}
-        <input type="submit" value="Add Questions">
+        <input type="submit" value="Submit">
     </form>
 </div>
 

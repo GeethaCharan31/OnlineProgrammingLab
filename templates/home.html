@@ -6,13 +6,19 @@
 <br>
 
 <div>
+
+    <h4 style="text-align:center">{{room_count}} labs/contests available</h4>
+
     <div>
         {% for room in rooms %}
         <div>
             <h3>HOST : @{{room.host.username}}</h3>
             <h4>{{room.id}} -- <a href="/room/{{room.id}}">{{room.name}}</a>
-                    --<a href="/update_room/{{room.id}}">EditRoom</a>
+                <!--Check for valid host-->
+                {% if request.user == room.host%}
+                --<a href="/update_room/{{room.id}}">EditRoom</a>
                 --<a href="/delete_room/{{room.id}}">DeleteRoom</a>
+                {%endif%}
             </h4>
             <hr>
         </div>

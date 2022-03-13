@@ -191,4 +191,16 @@ using function based forms here(MODEL FORMS)
 
 CRUD operations are achieved using the model forms of django
 
+create_question Form is added but it needs to be changed
 ----------------------------------------------------------------------------------------------
+14- Search Room Feature by name,host etc
+---------------------------------------------------------------------------------------------
+Search done but not by host only name of room
+
+
+---------------------------------------------------------------------------------------------
+15- Restrict Pages
+-----------------------------------------------------------------------------
+
+@login_required decarator is used to acheive restriction to pages that need login
+

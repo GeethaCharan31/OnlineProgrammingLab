@@ -1,5 +1,10 @@
 {% extends 'main.html' %}
 
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/room_style.css' %}">
+{% endblock %}
+
 {% block content %}
 <style>
     .room-container{
@@ -13,9 +18,17 @@
     <div>
         <div>
             {% for question in questions %}
-            <div>
-                <h4>{{question.id}} -- <a href="/room/{{room.id}}/{{question.id}}">{{question.question_title}}</a></h4>
+
+            <div class="question-tile">
+                <div class="question-tile-name">
+                    <h3>{{question.question_title}}</h3>
+                </div>
+                <div class="question-tile-button">
+                    <a href="/room/{{room.id}}/{{question.id}}" class="btn btn-primary rounded-0">Solve</a>
+                </div>
+
             </div>
+            <br>
             {% endfor %}
         </div>
     </div>

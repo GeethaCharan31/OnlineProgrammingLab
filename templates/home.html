@@ -1,27 +1,46 @@
 {% extends 'main.html' %}
 
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/home_style.css' %}">
+{% endblock %}
+
 {% block content %}
 
-
-<br>
-
 <div>
-
-    <h4 style="text-align:center">{{room_count}} labs/contests available</h4>
-
+    <h4 style="text-align:center; margin:15px; ">{{room_count}} labs/contests available</h4>
     <div>
         {% for room in rooms %}
-        <div>
-            <h3>HOST : @{{room.host.username}}</h3>
-            <h4>{{room.id}} -- <a href="/room/{{room.id}}">{{room.name}}</a>
-                <!--Check for valid host-->
+
+        <div class="room-tile">
+
+            <div class="room-tile-1">
+                <div class="room-tile-name">
+                    <h2>{{room.name}}</h2>
+                </div>
+                <div class="room-tile-button">
+                    <a href="/room/{{room.id}}" class="btn btn-primary rounded-0">Join Now</a>
+                </div>
+
+            </div>
+
+            <div class="room-tile-2">
+                <div class="room-tile-host">
+                    <h6>Host : {{room.host.username}}</h6>
+                </div>
                 {% if request.user == room.host %}
-                --<a href="/update_room/{{room.id}}">EditRoom</a>
-                --<a href="/delete_room/{{room.id}}">DeleteRoom</a>
+                <div class="room-tile-edit">
+                    <a href="/update_room/{{room.id}}" class="btn btn-secondary rounded-0 ">EditRoom</a>
+                </div>
+                <div class="room-tile-delete">
+                    <a href="/delete_room/{{room.id}}" class="btn btn-secondary rounded-0">DeleteRoom</a>
+                </div>
                 {%endif%}
-            </h4>
-            <hr>
+            </div>
+
+
         </div>
+        <br>
         {% endfor %}
     </div>
 </div>

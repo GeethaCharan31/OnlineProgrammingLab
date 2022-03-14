@@ -13,7 +13,14 @@
 </style>
 
 <div class="room-container">
-    <h2>{{room.name}}</h2>
+    <div>
+        <h2 style="text-align:center;padding:10px;">{{room.name}}</h2>
+        <br>
+    </div>
+    <div>
+        <!--Description Here
+        <br><br><br><br><br>-->
+    </div>
 
     <div>
         <div>
@@ -24,7 +31,7 @@
                     <h3>{{question.question_title}}</h3>
                 </div>
                 <div class="question-tile-button">
-                    <a href="/room/{{room.id}}/{{question.id}}" class="btn btn-primary rounded-0">Solve</a>
+                    <a href="/room/{{room.id}}/{{question.id}}" class="btn btn-secondary rounded-0">Solve</a>
                 </div>
 
             </div>

@@ -1,16 +1,23 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<h1>ROOM PAGE</h1>
-<h2>{{room.name}}</h2>
+<style>
+    .room-container{
+        margin:10px;
+    }
+</style>
 
-<div>
+<div class="room-container">
+    <h2>{{room.name}}</h2>
+
     <div>
-        {% for question in questions %}
         <div>
-            <h4>{{question.id}} -- <a href="/room/{{room.id}}/{{question.id}}">{{question.question_title}}</a></h4>
+            {% for question in questions %}
+            <div>
+                <h4>{{question.id}} -- <a href="/room/{{room.id}}/{{question.id}}">{{question.question_title}}</a></h4>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

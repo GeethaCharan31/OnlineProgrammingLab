@@ -1,10 +1,34 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<h1>Question PAGE</h1>
-<h2>{{question.question_title}}</h2>
-<h2>{{question.question_full}}</h2>
-<h2>{{question.sample_test_case}}</h2>
 
+<style>
+    .question-compiler-container{
+        display:grid;
+        grid-template-columns :3fr  7fr;
+    }
+    .question-container{
+        border-right:solid;
+        margin:10px;
+    }
+    .compiler-container{
+        margin:10px;
+    }
 
+</style>
+
+<div class="question-compiler-container">
+
+    <div class="question-container">
+        <h4>{{question.question_title}}</h4>
+        <h6>{{question.question_full|linebreaks}}</h6>
+        <h6>{{question.sample_test_case|linebreaks}}</h6>
+        <!--Use either <pre> tag or |linebreaks filter to get \n in output-->
+    </div>
+    <div class="compiler-container">
+        <h1>Compiler Here</h1>
+
+    </div>
+
+</div>
 {% endblock %}

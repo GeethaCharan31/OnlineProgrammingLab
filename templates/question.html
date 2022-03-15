@@ -27,6 +27,10 @@
     </div>
     <div class="compiler-container">
         <h1>Compiler Here</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            <textarea name="codearea" style="height:300px;width:700px"></textarea>
+        </form>
 
     </div>
 

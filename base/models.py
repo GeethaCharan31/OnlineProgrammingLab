@@ -29,3 +29,17 @@ class Question(models.Model):
 
     def __str__(self):
         return self.question_title
+
+
+# Model for solution
+class Solution(models.Model):
+    code = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user

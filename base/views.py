@@ -1,9 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Room, Question
-from .forms import RoomForm, QuestionForm
+from .forms import RoomForm, QuestionForm, SolutionForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -31,8 +33,13 @@ def room(request, pk):
 
 
 def question(request, pk, pk2):
+    """
+    For Submission
+    """
+    form = SolutionForm()
+    # above one for form
     question = Question.objects.get(id=pk2)
-    context = {'question': question}
+    context = {'question': question, 'form': form}
     return render(request, "question.html", context)
 
 
@@ -94,3 +101,12 @@ def createQuestion(request):
 
     context = {'form': form}
     return render(request, "question_form.html", context)
+
+
+def finalSubmit(request):
+    if request.method == "POST":
+        form = SolutionForm(request.POST)
+        if form.is_valid():
+            form.save()
+    context = {}
+    return render(request, "submitted.html", context)

@@ -11,4 +11,6 @@ urlpatterns = [
     path('delete_room/<str:pk>', views.deleteRoom, name="deleteRoom"),
 
     path('create_question/', views.createQuestion, name="createQuestion"),
+
+    path('final_submit/', views.finalSubmit, name="finalSubmit"),
 ]

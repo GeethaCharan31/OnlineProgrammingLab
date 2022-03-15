@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Room, Question
+from .models import Room, Question,Solution
 
 
 class RoomForm(ModelForm):
@@ -11,4 +11,9 @@ class RoomForm(ModelForm):
 class QuestionForm(ModelForm):
     class Meta:
         model = Question
+        fields = '__all__'  # ['name', 'description']  # '__all__'
+
+class SolutionForm(ModelForm):
+    class Meta:
+        model = Solution
         fields = '__all__'  # ['name', 'description']  # '__all__'

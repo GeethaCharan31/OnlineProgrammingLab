@@ -10,7 +10,13 @@ urlpatterns = [
     path('update_room/<str:pk>', views.updateRoom, name="updateRoom"),
     path('delete_room/<str:pk>', views.deleteRoom, name="deleteRoom"),
 
+    # view responses
+    path('room_responses/<str:pk>', views.roomResponses, name="roomResponses"),
+    path('question_responses/<str:pk>/<str:pk2>', views.questionResponses, name="questionResponses"),
+
     path('create_question/', views.createQuestion, name="createQuestion"),
+    path('update_question/<str:pk>/<str:pk2>', views.updateQuestion, name="updateQuestion"),
+    path('delete_question/<str:pk>/<str:pk2>', views.deleteQuestion, name="deleteQuestion"),
 
     path('final_submit/', views.finalSubmit, name="finalSubmit"),
 ]

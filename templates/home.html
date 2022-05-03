@@ -1,8 +1,8 @@
 {% extends 'main.html' %}
 
 {% block style %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/home_style.css' %}">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/home_style.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -29,16 +29,22 @@
                     <h6>Host : {{room.host.username}}</h6>
                 </div>
                 {% if request.user == room.host %}
-                <div class="room-tile-edit">
-                    <a href="/update_room/{{room.id}}" class="btn btn-secondary rounded-0 ">EditRoom</a>
+                <!-- Default dropend button -->
+                <div class="room-tile-settings">
+                <div class="btn-group dropend">
+                    <button type="button" class="btn btn-secondary dropdown-toggle rounded-0" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Host Options
+                    </button>
+                    <ul class="dropdown-menu">
+                        <a class="dropdown-item" href="/room_responses/{{room.id}}">CheckResponses</a>
+                        <a class="dropdown-item" href="/update_room/{{room.id}}">EditRoom</a>
+                        <a class="dropdown-item" href="/delete_room/{{room.id}}">DeleteRoom</a>
+                    </ul>
                 </div>
-                <div class="room-tile-delete">
-                    <a href="/delete_room/{{room.id}}" class="btn btn-secondary rounded-0">DeleteRoom</a>
                 </div>
                 {%endif%}
             </div>
-
-
         </div>
         <br>
         {% endfor %}

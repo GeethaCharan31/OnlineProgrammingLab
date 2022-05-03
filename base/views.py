@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import Room, Question
+from .models import Room, Question, Solution
 from .forms import RoomForm, QuestionForm, SolutionForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -85,6 +85,13 @@ def deleteRoom(request, pk):
 
     if request.method == "POST":
         room.delete()
+        """
+        # delete questions in room too.
+        questions = Question.objects.filter(room=pk)
+        for q in questions:
+            q.delete()
+        Not needed as FK is used as ON_CASCADE_DELETE    
+        """
         return redirect('home')
 
     return render(request, "delete.html", {'obj': room})
@@ -102,6 +109,42 @@ def createQuestion(request):
     context = {'form': form}
     return render(request, "question_form.html", context)
 
+@login_required(login_url='login')
+def updateQuestion(request, pk,pk2):
+    room = Room.objects.get(id=pk)
+    question = Question.objects.get(id=pk2)
+    form = QuestionForm(instance=question)
+
+    # checking for valid host
+    if request.user != room.host:
+        return HttpResponse("You can't do this ...")
+
+    if request.method == "POST":
+        form = QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            form.save();
+            return redirect('room',room.id)
+
+    context = {'form': form}
+    return render(request, "form.html", context)
+
+@login_required(login_url='login')
+def deleteQuestion(request, pk,pk2):
+    room = Room.objects.get(id=pk)
+    question = Question.objects.get(id=pk2)
+
+    # checking for valid host
+    if request.user != room.host:
+        return HttpResponse("You can't do this ...")
+
+    if request.method == "POST":
+        question.delete()
+        return redirect('room',room.id)
+
+    return render(request, "delete.html", {'obj': question})
+
+
+
 
 def finalSubmit(request):
     if request.method == "POST":
@@ -110,3 +153,34 @@ def finalSubmit(request):
             form.save()
     context = {}
     return render(request, "submitted.html", context)
+
+
+
+
+# responses related views
+@login_required(login_url='login')
+def roomResponses(request, pk):
+    room = Room.objects.get(id=pk)
+
+    # checking for valid host
+    if request.user != room.host:
+        return HttpResponse("You can't do this ...")
+
+    solutions = Solution.objects.filter(room=room)
+
+    context = {'solutions': solutions}
+    return render(request, "room_responses.html", context)
+
+@login_required(login_url='login')
+def questionResponses(request, pk,pk2):
+    room=Room.objects.get(id=pk)
+    question = Question.objects.get(id=pk2)
+
+    # checking for valid host
+    if request.user != room.host:
+        return HttpResponse("You can't do this ...")
+
+    solutions = Solution.objects.filter(question=question)
+
+    context = {'solutions': solutions}
+    return render(request, "question_responses.html", context)

@@ -31,9 +31,24 @@
                     <h3>{{question.question_title}}</h3>
                 </div>
                 <div class="question-tile-button">
-                    <a href="/room/{{room.id}}/{{question.id}}" class="btn btn-secondary rounded-0">Solve</a>
+                    <a href="/room/{{room.id}}/{{question.id}}" class="btn btn-primary rounded-0">Solve</a>
                 </div>
-
+                {% if request.user == room.host %}
+                <div class="question-tile-settings">
+                <div class="btn-group dropend">
+                    <button type="button" class="btn btn-secondary dropdown-toggle rounded-0" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        {% load static %}
+                        <img src="{% static 'images/gear.png' %}" width="20px">
+                    </button>
+                    <ul class="dropdown-menu">
+                        <a class="dropdown-item" href="/question_responses/{{room.id}}/{{question.id}}">CheckResponses</a>
+                        <a class="dropdown-item" href="/update_question/{{room.id}}/{{question.id}}">EditQuestion</a>
+                        <a class="dropdown-item" href="/delete_question/{{room.id}}/{{question.id}}">DeleteQuestion</a>
+                    </ul>
+                </div>
+                    </div>
+                {%endif%}
             </div>
             <br>
             {% endfor %}

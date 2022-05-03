@@ -1,6 +1,6 @@
 .room-tile{
 		margin: auto;
-		height: 110px;
+		height: 115px;
 		width: 900px;
 		border-style: solid;
 	}
@@ -24,21 +24,21 @@
 
 	.room-tile-2{
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: 3fr 1fr;
 	}
-
+    .room-tile-host{
+        margin:left;
+    }
+    .room-tile-settings{
+        margin:auto;
+    }
 	.room-tile-host h6{
-		padding-top:4px;
+		padding-top:7px;
 		padding-left:4px;
 	}
-
-	.room-tile-edit a{
-		height: 31px;
-		width: 300px;
-		padding:3.5px;
+	.room-tile-settings button{
+	    width:227px;
+	    height: 38px;
+	    padding-top:4px;
+		padding-left:4px;
 	}
-	.room-tile-delete a{
-		height: 31px;
-		width: 300px;
-		padding:3.5px;
-    }

@@ -6,7 +6,7 @@
 		width: 900px;
 		border-style: solid;
 		display: grid;
-		grid-template-columns: 3fr 1fr;
+		grid-template-columns: 11fr 3fr 1fr;
 	}
 	.question-tile-name{
 		margin: auto;
@@ -14,8 +14,15 @@
 	.question-tile-button{
 		margin: auto;
 	}
+	.question-tile-settings{
+		margin: auto;
+	}
 	.question-tile-button a{
 		width: 225px;
-		height: 64px;
+		height: 65px;
 		padding:20px;
+	}
+	.question-tile-settings button{
+	margin:auto;
+		height: 65px;
 	}

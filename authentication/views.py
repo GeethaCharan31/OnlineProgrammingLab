@@ -25,7 +25,7 @@ def login(request):
         if user is not None:
             auth.login(request, user)
             firstname = user.first_name
-            return render(request, "auth/index.html", {'firstname': firstname})
+            return redirect("home")
         else:
             messages.error(request, "Credentials Mismatch")
             return redirect('index')

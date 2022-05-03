@@ -109,8 +109,9 @@ def createQuestion(request):
     context = {'form': form}
     return render(request, "question_form.html", context)
 
+
 @login_required(login_url='login')
-def updateQuestion(request, pk,pk2):
+def updateQuestion(request, pk, pk2):
     room = Room.objects.get(id=pk)
     question = Question.objects.get(id=pk2)
     form = QuestionForm(instance=question)
@@ -123,13 +124,14 @@ def updateQuestion(request, pk,pk2):
         form = QuestionForm(request.POST, instance=question)
         if form.is_valid():
             form.save();
-            return redirect('room',room.id)
+            return redirect('room', room.id)
 
     context = {'form': form}
     return render(request, "form.html", context)
 
+
 @login_required(login_url='login')
-def deleteQuestion(request, pk,pk2):
+def deleteQuestion(request, pk, pk2):
     room = Room.objects.get(id=pk)
     question = Question.objects.get(id=pk2)
 
@@ -139,11 +141,9 @@ def deleteQuestion(request, pk,pk2):
 
     if request.method == "POST":
         question.delete()
-        return redirect('room',room.id)
+        return redirect('room', room.id)
 
     return render(request, "delete.html", {'obj': question})
-
-
 
 
 def finalSubmit(request):
@@ -153,8 +153,6 @@ def finalSubmit(request):
             form.save()
     context = {}
     return render(request, "submitted.html", context)
-
-
 
 
 # responses related views
@@ -168,12 +166,13 @@ def roomResponses(request, pk):
 
     solutions = Solution.objects.filter(room=room)
 
-    context = {'solutions': solutions}
-    return render(request, "room_responses.html", context)
+    context = {'solutions': solutions, 'room': room}
+    return render(request, "responses.html", context)
+
 
 @login_required(login_url='login')
-def questionResponses(request, pk,pk2):
-    room=Room.objects.get(id=pk)
+def questionResponses(request, pk, pk2):
+    room = Room.objects.get(id=pk)
     question = Question.objects.get(id=pk2)
 
     # checking for valid host
@@ -182,5 +181,19 @@ def questionResponses(request, pk,pk2):
 
     solutions = Solution.objects.filter(question=question)
 
-    context = {'solutions': solutions}
-    return render(request, "question_responses.html", context)
+    context = {'solutions': solutions, 'room': room, 'question': question}
+    return render(request, "responses.html", context)
+
+
+@login_required(login_url='login')
+def viewResponses(request, pk, pk2, pk3):
+    room = Room.objects.get(id=pk)
+    question = Question.objects.get(id=pk2)
+    solution = Solution.objects.get(id=pk3)
+    form = SolutionForm(instance=solution)
+    # checking for valid host
+    if request.user != room.host:
+        return HttpResponse("You can't do this ...")
+
+    context = {'form': form, 'question': question}
+    return render(request, "view_response_question.html", context)

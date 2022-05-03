@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Username</th>
+        <th scope="col">Question Title</th>
+        <th scope="col">Room/Lab Title</th>
+        <th scope="col">Code</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for sol in solutions %}
+    <tr>
+        <th scope="row">{{sol.id}}</th>
+        <td>{{sol.user}}</td>
+        <td>{{sol.question}}</td>
+        <td>{{sol.room}}</td>
+        <td><a href="//{{request.get_host}}/view_response/{{room.id}}/{{sol.question.id}}/{{sol.id}}"> Check Code </a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
+

@@ -215,3 +215,9 @@ Search done but not by host only name of room
 Added form for solution at present (Should be only code present)
 
 -------------------------------------------------------------------------------------------
+
+
+18-- Clearing database
+migrate app_name zero and then migrate.
+
+-------------------------------------------------------------------------------------------

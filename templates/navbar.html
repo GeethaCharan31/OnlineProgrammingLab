@@ -19,7 +19,7 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
                 -->
-                <form class="d-flex" method="GET" action="/home/">
+                <form class="d-flex" method="GET" action="/home/" style="padding-right:6px;">
                     <input type="text" name="q" placeholder="Search Rooms...">
                     <!--<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-primary" type="submit">Search</button>-->
@@ -38,7 +38,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                        <li><a class="dropdown-item" href="//{{request.get_host}}/logout">Logout</a></li>
                     </ul>
                 </li>
             </ul>

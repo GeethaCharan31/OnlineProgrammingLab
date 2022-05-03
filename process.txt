@@ -123,6 +123,9 @@ now to link stylesheet we load static first and then link the css . it looks lik
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/styles_login.css' %}">
 
+{% load static %}
+<img src="{% static 'images/login.png' %}">
+
 and restart the server to see changes
 
 ---------------------------------------------------------------------------------

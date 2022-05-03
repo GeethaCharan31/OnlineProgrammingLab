@@ -1,32 +1,49 @@
 {% extends 'main.html' %}
 
+{% block style %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/auth/index_style.css' %}">
+
+{% endblock %}
 
 {% block content %}
+
 {% for message in messages %}
-    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
-        <strong>Message:</strong>{{message}}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-{%endfor%}
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    <strong>Message : </strong> {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
 
-<h1>Welcome to Online Programming Platform</h1>
-
-
-
+<div class="index-title">
+    <h1>Welcome to Online Programming Platform</h1>
+</div>
 
 {% if user.is_authenticated %}
-    <h3>
-        Hello {{fname}}
-    </h3>
-    <h4>
-        You're succesfully logged in.
-    </h4>
-<button type="submit"><a href="/logout">Logout</a></button>
+<h3 style="text-align:center;padding-top:50px;">Hello User</h3>
+<h4 style="text-align:center;padding-top:10px;">You're successfully logged in.</h4>
+<div style="text-align:center;padding-top:10px;">
+    <a class="btn btn-primary rounded-0" href="/home" role="button" style="width:240px;">
+        <strong>Home</strong></a>
+</div>
+<div style="text-align:center;padding-top:10px;">
+    <a class="btn btn-danger rounded-0" href="/logout" role="button" style="width:240px;">
+        <strong>Logout</strong></a>
+</div>
 {%else%}
-<button type="submit"><a href="/login">Login</a></button>
-<button type="submit"><a href="/register">Register</a></button>
+<div class="index-body2">
+    <div></div>
+    <div><a class="btn btn-light rounded-0" href="/login" role="button" style="width:240px;">
+        {% load static%}
+        <img src="{% static 'images/login.png' %}" width=200px>
+        <strong>Login</strong></a></div>
+    <div><a class="btn btn-light rounded-0" href="/register" role="button" style="width:240px;">
+        {% load static%}
+        <img src="{% static 'images/register.png' %}" width=200px>
+        <strong>Register</strong></a></div>
+    <div></div>
+</div>
 {%endif%}
+
 
 {% endblock %}

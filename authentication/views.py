@@ -28,7 +28,7 @@ def login(request):
             return redirect("home")
         else:
             messages.error(request, "Credentials Mismatch")
-            return redirect('index')
+            return redirect('login')
 
     return render(request, "auth/login.html")
 
@@ -43,16 +43,16 @@ def register(request):
         cpassword = request.POST['cpassword']
 
         if User.objects.filter(username=username):
-            messages.error(request, "Username already exists!")
-            return redirect('index')  # change this later
+            messages.error(request, "USERNAME ALREADY EXISTS!!!")
+            return redirect('register')
 
         if User.objects.filter(email=email):
-            messages.error(request, "Email already exists!")
-            return redirect('index')
+            messages.error(request, "EMAIL ALREADY EXISTS!!!")
+            return redirect('register')
 
         if password != cpassword:
-            messages.error(request, "Password Mismatch")
-            return redirect('index')
+            messages.error(request, "PASSWORD MISMATCH...")
+            return redirect('register')
 
         # we collected data from form now we make a model using contrib.auth.models User
         myuser = User.objects.create_user(username, email, password)
@@ -63,15 +63,16 @@ def register(request):
 
         # now to notify user about successful registration we use django messages
 
-        messages.success(request, "CONFIRM YOUR EMAIL")
+        messages.success(request, "A VERIFICATION LINK HAS BEEN SENT TO YOUR MAIL. PLEASE CONFIRM IT ")
 
+        """
         # welcome mail
         subject = "Welcome to SAY-Online Programming Platform"
         message = "Hello " + myuser.first_name + "!! \n" + "Welcome to ONLINE PROGRAMMING PLATFORM"
         from_email = settings.EMAIL_HOST_USER
         to_list = [myuser.email]
         send_mail(subject, message, from_email, to_list, fail_silently=True)
-
+        """
         # Confirmation Email
 
         current_site = get_current_site(request)
@@ -99,7 +100,7 @@ def register(request):
 
 def logout(request):
     auth.logout(request)
-    messages.success(request, "Logged Out Succesfully")
+    messages.success(request, "LOGGED OUT SUCCESSFULLY")
     return redirect('index')
 
 

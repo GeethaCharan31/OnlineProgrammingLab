@@ -18,6 +18,7 @@ def question(request, pk, pk2):
     user = User.objects.get(username=username)
 
     # as multiple submissions are possible we are using this, change this after submission is changed
+    # no need change too it can handle single submission too
     solution = Solution.objects.filter(room=room, question=question, user=user)
     sol = solution.last()
     if sol:

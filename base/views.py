@@ -163,7 +163,7 @@ def deleteQuestion(request, pk, pk2):
 
     return render(request, "delete.html", {'obj': question})
 
-
+# move to compiler-app
 def finalSubmit(request):
     if request.method == "POST":
         form = SolutionForm(request.POST)

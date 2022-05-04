@@ -33,6 +33,7 @@ def room(request, pk):
 
     return render(request, "room.html", context)
 
+
 # remove this view as it is moved to compiler app
 def question(request, pk, pk2):
     """
@@ -43,7 +44,6 @@ def question(request, pk, pk2):
     question = Question.objects.get(id=pk2)
     context = {'question': question, 'form': form}
     return render(request, "question.html", context)
-
 
 
 @login_required(login_url='login')
@@ -59,7 +59,7 @@ def createRoom(request):
         room_info.save()
 
         if request.POST['btnradio'] == 'btnradio1':
-            return redirect('createQuestion',room_info.id)
+            return redirect('createQuestion', room_info.id)
         else:
             return redirect('home')
     context = {}
@@ -69,7 +69,6 @@ def createRoom(request):
 @login_required(login_url='login')
 def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
-
 
     # checking for valid host
     if request.user != room.host:
@@ -103,7 +102,7 @@ def deleteRoom(request, pk):
 
 
 @login_required(login_url='login')
-def createQuestion(request,pk):
+def createQuestion(request, pk):
     if request.method == "POST":
         question_title = request.POST.get('questiontitle')
         question_full = request.POST['fullquestion']
@@ -111,17 +110,17 @@ def createQuestion(request,pk):
 
         room = Room.objects.get(id=pk)
 
-        question_info = Question(question_title=question_title,question_full=question_full,
-                                 sample_test_case=sample_test_case,room=room)
+        question_info = Question(question_title=question_title, question_full=question_full,
+                                 sample_test_case=sample_test_case, room=room)
 
         if request.POST['btnradio'] == 'btnradio1':
             question_info.save()
-            return redirect('createQuestion',room.id)
+            return redirect('createQuestion', room.id)
         elif request.POST['btnradio'] == 'btnradio2':
             question_info.save()
-            return redirect('room',room.id)
+            return redirect('room', room.id)
         else:
-            return redirect('room',room.id)
+            return redirect('room', room.id)
     context = {}
     return render(request, "question_form2.html", context)
 
@@ -130,7 +129,7 @@ def createQuestion(request,pk):
 def updateQuestion(request, pk, pk2):
     room = Room.objects.get(id=pk)
     question = Question.objects.get(id=pk2)
-    #form = QuestionForm(instance=question)
+    # form = QuestionForm(instance=question)
 
     # checking for valid host
     if request.user != room.host:
@@ -162,6 +161,7 @@ def deleteQuestion(request, pk, pk2):
         return redirect('room', room.id)
 
     return render(request, "delete.html", {'obj': question})
+
 
 # move to compiler-app
 def finalSubmit(request):

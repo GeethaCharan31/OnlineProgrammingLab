@@ -21,5 +21,5 @@ urlpatterns = [
     path('update_question/<str:pk>/<str:pk2>', views.updateQuestion, name="updateQuestion"),
     path('delete_question/<str:pk>/<str:pk2>', views.deleteQuestion, name="deleteQuestion"),
 
-    #path('final_submit/', views.finalSubmit, name="finalSubmit"),
+    # path('final_submit/', views.finalSubmit, name="finalSubmit"),
 ]

@@ -38,8 +38,7 @@ class Solution(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
-    input=models.TextField(null=True)
-    #output=models.TextField()
+    input = models.TextField(null=True)
 
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)

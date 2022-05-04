@@ -15,11 +15,10 @@
 <div class="room-container">
     <div>
         <h2 style="text-align:center;padding:10px;">{{room.name}}</h2>
-        <br>
     </div>
     <div>
-        <!--Description Here
-        <br><br><br><br><br>-->
+        <h4 style="text-align:center;padding:10px;">Description : {{room.description}}</h4>
+        <br>
     </div>
 
     <div>
@@ -54,7 +53,7 @@
             {% endfor %}
         </div>
         <div style="text-align:center">
-            <a class="btn btn-danger" href="//{{request.get_host}}/create_question" role="button">Add More Questions</a>
+            <a class="btn btn-danger" href="//{{request.get_host}}/create_question/{{room.id}}" role="button">Add More Questions</a>
         </div>
     </div>
 </div>

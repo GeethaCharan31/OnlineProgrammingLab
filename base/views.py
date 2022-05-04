@@ -33,7 +33,7 @@ def room(request, pk):
 
     return render(request, "room.html", context)
 
-
+# remove this view as it is moved to compiler app
 def question(request, pk, pk2):
     """
     For Submission
@@ -59,7 +59,7 @@ def createRoom(request):
         room_info.save()
 
         if request.POST['btnradio'] == 'btnradio1':
-            return redirect('createQuestion')
+            return redirect('createQuestion',room_info.id)
         else:
             return redirect('home')
     context = {}
@@ -69,20 +69,22 @@ def createRoom(request):
 @login_required(login_url='login')
 def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
-    form = RoomForm(instance=room)
+
 
     # checking for valid host
     if request.user != room.host:
         return HttpResponse("You can't do this ...")
 
     if request.method == "POST":
-        form = RoomForm(request.POST, instance=room)
-        if form.is_valid():
-            form.save();
-            return redirect('home')
+        room = Room.objects.get(id=pk)
+        room.name = request.POST.get('roomname')  # name of element in form
+        room.description = request.POST['description']
+        room.save()
 
-    context = {'form': form}
-    return render(request, "form.html", context)
+        return redirect('home')
+
+    context = {'room': room}
+    return render(request, "form2.html", context)
 
 
 @login_required(login_url='login')
@@ -95,49 +97,55 @@ def deleteRoom(request, pk):
 
     if request.method == "POST":
         room.delete()
-        """
-        # delete questions in room too.
-        questions = Question.objects.filter(room=pk)
-        for q in questions:
-            q.delete()
-        Not needed as FK is used as ON_CASCADE_DELETE    
-        """
         return redirect('home')
 
     return render(request, "delete.html", {'obj': room})
 
 
 @login_required(login_url='login')
-def createQuestion(request):
-    form = QuestionForm()
+def createQuestion(request,pk):
     if request.method == "POST":
-        form = QuestionForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('createQuestion')
+        question_title = request.POST.get('questiontitle')
+        question_full = request.POST['fullquestion']
+        sample_test_case = request.POST['testcase']
 
-    context = {'form': form}
-    return render(request, "question_form.html", context)
+        room = Room.objects.get(id=pk)
+
+        question_info = Question(question_title=question_title,question_full=question_full,
+                                 sample_test_case=sample_test_case,room=room)
+
+        if request.POST['btnradio'] == 'btnradio1':
+            question_info.save()
+            return redirect('createQuestion',room.id)
+        elif request.POST['btnradio'] == 'btnradio2':
+            question_info.save()
+            return redirect('room',room.id)
+        else:
+            return redirect('room',room.id)
+    context = {}
+    return render(request, "question_form2.html", context)
 
 
 @login_required(login_url='login')
 def updateQuestion(request, pk, pk2):
     room = Room.objects.get(id=pk)
     question = Question.objects.get(id=pk2)
-    form = QuestionForm(instance=question)
+    #form = QuestionForm(instance=question)
 
     # checking for valid host
     if request.user != room.host:
         return HttpResponse("You can't do this ...")
 
     if request.method == "POST":
-        form = QuestionForm(request.POST, instance=question)
-        if form.is_valid():
-            form.save();
-            return redirect('room', room.id)
+        question = Question.objects.get(id=pk2)
+        question.question_title = request.POST.get('questiontitle')
+        question.question_full = request.POST['fullquestion']
+        question.sample_test_case = request.POST['testcase']
+        question.save()
+        return redirect('room', room.id)
 
-    context = {'form': form}
-    return render(request, "form.html", context)
+    context = {'question': question}
+    return render(request, "question_form2.html", context)
 
 
 @login_required(login_url='login')

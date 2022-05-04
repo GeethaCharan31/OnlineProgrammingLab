@@ -1,13 +1,24 @@
 {% extends 'main.html' %}
 
 {% block content %}
+<style>
+    .delete_div{
+        text-align:center;
+        padding-top:100px;
+    }
+    .delete_div h2{
+        padding-bottom:20px;
+    }
 
-<div>
+</style>
+
+
+<div class="delete_div">
     <form method="POST" action="">
         {% csrf_token %}
-        <p>Are you sure you want to delete "{{obj}}"?</p>
-        <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
-        <input type="submit" value="Delete">
+        <h2>Are you sure you want to delete "{{obj}}"?</h2>
+        <a class="btn btn-primary btn-lg" href="{{request.META.HTTP_REFERER}}" role="button">No, Go back</a>
+        <button class="btn btn-danger btn-lg" type="submit">Delete</button>
     </form>
 </div>
 

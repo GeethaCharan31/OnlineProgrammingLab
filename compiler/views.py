@@ -6,7 +6,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
-from base.forms import SolutionForm
 from base.models import Question, Room, Solution
 
 
@@ -21,8 +20,12 @@ def question(request, pk, pk2):
     # as multiple submissions are possible we are using this, change this after submission is changed
     solution = Solution.objects.filter(room=room, question=question, user=user)
     sol = solution.last()
-    code = sol.code
-    input = sol.input
+    if sol:
+        code = sol.code
+        input = sol.input
+    else:
+        code = ""
+        input = ""
     output = ""
 
     context = {'question': question, "code": code, "input": input, "output": output, 'submitFlag': submitFlag}
@@ -58,18 +61,24 @@ def runCode(request, pk, pk2):
         question = Question.objects.get(id=pk2)
         context = {'question': question, "code": code, "input": y, "output": output, 'submitFlag': submitFlag}
         return render(request, 'question.html', context)
+
     if 'final_submit' in request.POST:
         if request.method == "POST":
-            code = request.POST['code']
-            input = request.POST['input']
+            room = Room.objects.get(id=pk)
+            question = Question.objects.get(id=pk2)
             username = request.user.get_username()
             user = User.objects.get(username=username)
-            question = Question.objects.get(id=pk2)
-            room = Room.objects.get(id=pk)
-
-            sol_info = Solution(code=code, user=user, question=question, room=room, input=input)
-            sol_info.save()
-
+            solution = Solution.objects.filter(room=room, question=question, user=user)
+            if len(solution) >= 1:
+                sol = solution.last()
+                sol.code = request.POST['code']
+                sol.input = request.POST['input']
+                sol.save()
+            else:
+                code = request.POST['code']
+                input = request.POST['input']
+                sol_info = Solution(code=code, user=user, question=question, room=room, input=input)
+                sol_info.save()
         context = {}
         return render(request, "submitted.html", context)
 
@@ -105,7 +114,7 @@ def viewResponses(request, pk, pk2, pk3):
     context = {'question': question, "code": code, "input": input, 'output': output, 'submitFlag': submitFlag}
     return render(request, 'question.html', context)
 
-
+@login_required(login_url='login')
 def runResponse(request, pk, pk2, pk3):
     if request.method == 'POST':
         code = request.POST['code']

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # add new apps here
     'base.apps.BaseConfig',
     'authentication.apps.AuthenticationConfig',
+    'compiler.apps.CompilerConfig',
 ]
 
 MIDDLEWARE = [

@@ -28,7 +28,7 @@ django default page
 To create an app inside django-project we use
 " python manage.py startapp APP_NAME "
 Now to connect this app to our django project we go settings.py and add our app there
-i.e in ALLOWED_APPS we add new enter 'base.apps.BaseConfig' or simply 'base'
+i.e in INSTALLED_APPS we add new enter 'base.apps.BaseConfig' or simply 'base'
 
 Now we create an urls.py for our app as we cannot call our views from the project urls.py
 

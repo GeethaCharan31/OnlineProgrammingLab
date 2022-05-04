@@ -2,13 +2,15 @@
 
 {% block content %}
 
-CREATE ROOM and QUESTIONS FORM
+<div style="padding-top:20px; padding-left:40px;">
+<h4> CREATE ROOM and QUESTIONS </h4>
+
 <div>
     <form method="POST" action="">
         {% csrf_token %}
         {{form.as_p}}
-        <input type="submit" value="Add Questions">
+        <button class="btn btn-danger" type="submit">Submit & Continue</button>
     </form>
 </div>
-
+</div>
 {% endblock %}

@@ -202,7 +202,7 @@ def questionResponses(request, pk, pk2):
     context = {'solutions': solutions, 'room': room, 'question': question}
     return render(request, "responses.html", context)
 
-
+# shifted to compiler-app
 @login_required(login_url='login')
 def viewResponses(request, pk, pk2, pk3):
     room = Room.objects.get(id=pk)
@@ -215,3 +215,18 @@ def viewResponses(request, pk, pk2, pk3):
 
     context = {'form': form, 'question': question}
     return render(request, "view_response_question.html", context)
+
+@login_required(login_url='login')
+def deleteResponse(request, pk, pk2, pk3):
+    room = Room.objects.get(id=pk)
+    question = Question.objects.get(id=pk2)
+    solution = Solution.objects.get(id=pk3)
+
+    # checking for valid host
+    if request.user != room.host:
+        return HttpResponse("You can't do this ...")
+
+    if request.method == "POST":
+        solution.delete()
+        return redirect('home')
+    return render(request, "deleteResponse.html", {'obj': solution.user.username})

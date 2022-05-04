@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Room, Question, Solution
@@ -43,17 +45,25 @@ def question(request, pk, pk2):
     return render(request, "question.html", context)
 
 
+
 @login_required(login_url='login')
 def createRoom(request):
-    form = RoomForm()
     if request.method == "POST":
-        form = RoomForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('createQuestion')
+        name = request.POST.get('roomname')  # name of element in form
+        description = request.POST['description']
 
-    context = {'form': form}
-    return render(request, "form.html", context)
+        username = request.user.get_username()
+        host = User.objects.get(username=username)
+
+        room_info = Room(host=host, name=name, description=description)
+        room_info.save()
+
+        if request.POST['btnradio'] == 'btnradio1':
+            return redirect('createQuestion')
+        else:
+            return redirect('home')
+    context = {}
+    return render(request, "form2.html", context)
 
 
 @login_required(login_url='login')

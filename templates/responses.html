@@ -31,7 +31,7 @@
         <td>{{sol.question}}</td>
         <td>{{sol.room}}</td>
         <td><a href="//{{request.get_host}}/view_response/{{room.id}}/{{sol.question.id}}/{{sol.id}}/"> Check Code </a></td>
-        <td><a href="//{{request.get_host}}/delete_response/{{room.id}}/{{sol.question.id}}/{{sol.id}}/"> Delete Response </a></td>
+        <td><a style="color:red" href="//{{request.get_host}}/delete_response/{{room.id}}/{{sol.question.id}}/{{sol.id}}/"> Delete Response </a></td>
     </tr>
     {% endfor %}
     </tbody>

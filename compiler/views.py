@@ -80,7 +80,7 @@ def runCode(request, pk, pk2):
                 input = request.POST['input']
                 sol_info = Solution(code=code, user=user, question=question, room=room, input=input)
                 sol_info.save()
-        context = {}
+        context = {'room':room}
         return render(request, "submitted.html", context)
 
 
@@ -97,7 +97,7 @@ def finalSubmit(request, pk, pk2):
         sol_info = Solution(code=code, user=user, question=question, room=room, input=input)
         sol_info.save()
 
-    context = {}
+    context = {'room': room}
     return render(request, "submitted.html", context)
 
 
@@ -114,6 +114,7 @@ def viewResponses(request, pk, pk2, pk3):
     submitFlag = False
     context = {'question': question, "code": code, "input": input, 'output': output, 'submitFlag': submitFlag}
     return render(request, 'question.html', context)
+
 
 @login_required(login_url='login')
 def runResponse(request, pk, pk2, pk3):

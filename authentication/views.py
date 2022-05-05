@@ -115,6 +115,7 @@ def activate(request, uidb64, token):
         myuser.is_active = True
         myuser.save()
         auth.login(request, myuser)
-        return redirect('index')
+        context={'user':myuser}
+        return render(request,'auth/verified.html',context)
     else:
         return render(request, 'auth/activation_fail.html')

@@ -20,11 +20,11 @@
 </div>
 
 {% if user.is_authenticated %}
-<h3 style="text-align:center;padding-top:50px;">Hello User</h3>
-<h4 style="text-align:center;padding-top:10px;">You're successfully logged in.</h4>
+<h3 style="text-align:center;padding-top:50px;font-weight:normal">Hello <strong>{{user.username}}</strong></h3>
+<h4 style="text-align:center;padding-top:10px;font-weight:normal">You're successfully logged in.</h4>
 <div style="text-align:center;padding-top:10px;">
     <a class="btn btn-primary rounded-0" href="/home" role="button" style="width:240px;">
-        <strong>Home</strong></a>
+        <strong>Go to Home</strong></a>
 </div>
 <div style="text-align:center;padding-top:10px;">
     <a class="btn btn-danger rounded-0" href="/logout" role="button" style="width:240px;">

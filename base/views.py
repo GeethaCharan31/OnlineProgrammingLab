@@ -6,7 +6,7 @@ from .models import Room, Question, Solution
 from .forms import RoomForm, QuestionForm, SolutionForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-
+from django.contrib import messages
 from django.contrib.auth.models import User
 
 
@@ -61,6 +61,8 @@ def createRoom(request):
         if request.POST['btnradio'] == 'btnradio1':
             return redirect('createQuestion', room_info.id)
         else:
+            msg = name + " room successfully created"
+            messages.success(request, msg, extra_tags='info')
             return redirect('home')
     context = {}
     return render(request, "form2.html", context)
@@ -80,6 +82,9 @@ def updateRoom(request, pk):
         room.description = request.POST['description']
         room.save()
 
+        msg = room.name + " room successfully updated"
+        messages.success(request, msg, extra_tags='warning')
+
         return redirect('home')
 
     context = {'room': room}
@@ -96,6 +101,10 @@ def deleteRoom(request, pk):
 
     if request.method == "POST":
         room.delete()
+
+        msg = room.name + " room successfully deleted"
+        messages.success(request, msg, extra_tags='danger')
+
         return redirect('home')
 
     return render(request, "delete.html", {'obj': room})
@@ -118,6 +127,10 @@ def createQuestion(request, pk):
             return redirect('createQuestion', room.id)
         elif request.POST['btnradio'] == 'btnradio2':
             question_info.save()
+
+            msg = " Question(s) added successfully "
+            messages.success(request, msg, extra_tags='info')
+
             return redirect('room', room.id)
         else:
             return redirect('room', room.id)
@@ -141,6 +154,10 @@ def updateQuestion(request, pk, pk2):
         question.question_full = request.POST['fullquestion']
         question.sample_test_case = request.POST['testcase']
         question.save()
+
+        msg = " Question updated successfully "
+        messages.success(request, msg, extra_tags='warning')
+
         return redirect('room', room.id)
 
     context = {'question': question}
@@ -158,6 +175,10 @@ def deleteQuestion(request, pk, pk2):
 
     if request.method == "POST":
         question.delete()
+
+        msg = " Question deleted successfully "
+        messages.success(request, msg, extra_tags='danger')
+
         return redirect('room', room.id)
 
     return render(request, "delete.html", {'obj': question})
@@ -202,6 +223,7 @@ def questionResponses(request, pk, pk2):
     context = {'solutions': solutions, 'room': room, 'question': question}
     return render(request, "responses.html", context)
 
+
 # shifted to compiler-app
 @login_required(login_url='login')
 def viewResponses(request, pk, pk2, pk3):
@@ -216,6 +238,7 @@ def viewResponses(request, pk, pk2, pk3):
     context = {'form': form, 'question': question}
     return render(request, "view_response_question.html", context)
 
+
 @login_required(login_url='login')
 def deleteResponse(request, pk, pk2, pk3):
     room = Room.objects.get(id=pk)
@@ -228,5 +251,7 @@ def deleteResponse(request, pk, pk2, pk3):
 
     if request.method == "POST":
         solution.delete()
+        msg = "Response of " + solution.user.username + " is successfully deleted"
+        messages.success(request, msg, extra_tags='danger')
         return redirect('home')
     return render(request, "deleteResponse.html", {'obj': solution.user.username})

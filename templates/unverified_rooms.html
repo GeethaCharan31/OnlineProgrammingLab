@@ -29,9 +29,9 @@
         <th scope="row">{{room.id}}</th>
         <td>{{room.host}}</td>
         <td>{{room.name}}</td>
-        <td><a href="/room/{{room.id}}"> View Room </a></td>
-        <td><a href="/approve/{{room.id}}"> Approve </a></td>
-        <td><a style="color:red" href="/reject/{{room.id}}"> Reject </a></td>
+        <td><a class="btn btn-primary btn-sm" href="/room/{{room.id}}" role="button">View Room </a></td>
+        <td><a class="btn btn-primary btn-sm" href="/approve/{{room.id}}" role="button">Approve Room </a></td>
+        <td><a class="btn btn-danger btn-sm" href="/reject/{{room.id}}" role="button">Reject Room</a></td>
 
     </tr>
     {% endfor %}

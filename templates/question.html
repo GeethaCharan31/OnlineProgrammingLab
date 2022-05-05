@@ -23,6 +23,8 @@
 
 
 
+
+
 </style>
 
 <div class="question-compiler-container">
@@ -50,7 +52,18 @@
             {% csrf_token %}
             <div class="container">
                 <div class="row">
-                    <label for=""><h4>Coding Area</h4></label>
+                    <div class="col">
+                        <label for=""><h4>Coding Area</h4></label>
+                    </div>
+                    <!--
+                    <div class="col-md-2">
+                        <select class="form-select form-select-sm" aria-label="Default select example">
+                            <option selected>Python3</option>
+                            <option value="1">C</option>
+                            <option value="2">C++</option>
+                            <option value="3">Java1.8</option>
+                        </select>
+                    </div>-->
                     <textarea class="form-control" rows="14" name="code" id="code" style="border:1px solid grey;
                 font-family: 'Lucida Console'; font-size: 20px; "
                               onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,

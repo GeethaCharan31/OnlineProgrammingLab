@@ -11,12 +11,12 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
-
+@login_required(login_url='login')
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''  # for searching
     # rooms = Room.objects.filter(name__icontains=q)
     rooms = Room.objects.filter(
-        Q(name__icontains=q)  # |
+        Q(name__icontains=q), verified=True
         # Q(description__icontains=q) #add search by user too
     )
 
@@ -25,13 +25,23 @@ def home(request):
     context = {'rooms': rooms, 'room_count': room_count}
     return render(request, "home.html", context)
 
+@login_required(login_url='login')
+def myRooms(request):
+    resultset=Room.objects.filter(host=request.user)
 
+    myroomsFlag=True
+    room_count = resultset.count()
+    context = {'rooms':resultset,'room_count': room_count,'myroomsFlag':myroomsFlag}
+    return render(request, "home.html", context)
+
+@login_required(login_url='login')
 def room(request, pk):
     room = Room.objects.get(id=pk)
     questions = Question.objects.filter(room=pk)
     context = {'room': room, 'questions': questions}
 
     return render(request, "room.html", context)
+
 
 
 # remove this view as it is moved to compiler app
@@ -61,7 +71,7 @@ def createRoom(request):
         if request.POST['btnradio'] == 'btnradio1':
             return redirect('createQuestion', room_info.id)
         else:
-            msg = name + " room successfully created"
+            msg = name + " room is created. Please wait for approval."
             messages.success(request, msg, extra_tags='info')
             return redirect('home')
     context = {}
@@ -73,7 +83,7 @@ def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
 
     # checking for valid host
-    if request.user != room.host:
+    if request.user.username not in [room.host.username, 'admin']:
         return HttpResponse("You can't do this ...")
 
     if request.method == "POST":
@@ -96,7 +106,7 @@ def deleteRoom(request, pk):
     room = Room.objects.get(id=pk)
 
     # checking for valid host
-    if request.user != room.host:
+    if request.user.username not in [room.host.username, 'admin']:
         return HttpResponse("You can't do this ...")
 
     if request.method == "POST":
@@ -145,7 +155,7 @@ def updateQuestion(request, pk, pk2):
     # form = QuestionForm(instance=question)
 
     # checking for valid host
-    if request.user != room.host:
+    if request.user.username not in [room.host.username, 'admin']:
         return HttpResponse("You can't do this ...")
 
     if request.method == "POST":
@@ -170,7 +180,7 @@ def deleteQuestion(request, pk, pk2):
     question = Question.objects.get(id=pk2)
 
     # checking for valid host
-    if request.user != room.host:
+    if request.user.username not in [room.host.username, 'admin']:
         return HttpResponse("You can't do this ...")
 
     if request.method == "POST":
@@ -200,7 +210,7 @@ def roomResponses(request, pk):
     room = Room.objects.get(id=pk)
 
     # checking for valid host
-    if request.user != room.host:
+    if request.user.username not in [room.host.username, 'admin']:
         return HttpResponse("You can't do this ...")
 
     solutions = Solution.objects.filter(room=room)
@@ -215,7 +225,7 @@ def questionResponses(request, pk, pk2):
     question = Question.objects.get(id=pk2)
 
     # checking for valid host
-    if request.user != room.host:
+    if request.user.username not in [room.host.username, 'admin']:
         return HttpResponse("You can't do this ...")
 
     solutions = Solution.objects.filter(question=question)
@@ -232,7 +242,7 @@ def viewResponses(request, pk, pk2, pk3):
     solution = Solution.objects.get(id=pk3)
     form = SolutionForm(instance=solution)
     # checking for valid host
-    if request.user != room.host:
+    if request.user.username not in [room.host.username, 'admin']:
         return HttpResponse("You can't do this ...")
 
     context = {'form': form, 'question': question}
@@ -246,7 +256,7 @@ def deleteResponse(request, pk, pk2, pk3):
     solution = Solution.objects.get(id=pk3)
 
     # checking for valid host
-    if request.user != room.host:
+    if request.user.username not in [room.host.username, 'admin']:
         return HttpResponse("You can't do this ...")
 
     if request.method == "POST":
@@ -255,3 +265,40 @@ def deleteResponse(request, pk, pk2, pk3):
         messages.success(request, msg, extra_tags='danger')
         return redirect('home')
     return render(request, "deleteResponse.html", {'obj': solution.user.username})
+
+
+def unverifiedRooms(request):
+    resultset = Room.objects.filter(verified=False)
+    if request.user.username != "admin":
+        return HttpResponse("You can't do this ...")
+
+    context = {'rooms': resultset}
+    return render(request, "unverified_rooms.html", context)
+
+
+def approveRoom(request, pk):
+    if request.user.username != "admin":
+        return HttpResponse("You can't do this ...")
+
+    room = Room.objects.get(id=pk)
+    room.verified = True
+    room.save()
+
+    msg = " Room " + room.name + " by " + room.host.username + " is approved successfully."
+    messages.success(request, msg, extra_tags='info')
+
+    return redirect('unverifiedRooms')
+
+
+def rejectRoom(request, pk):
+    if request.user.username != "admin":
+        return HttpResponse("You can't do this ...")
+
+    room = Room.objects.get(id=pk)
+    room.delete()
+
+    msg = " Room " + room.name + " by " + room.host.username + " is rejected."
+    messages.success(request, msg, extra_tags='danger')
+
+    return redirect('unverifiedRooms')
+

@@ -23,5 +23,12 @@ urlpatterns = [
     path('update_question/<str:pk>/<str:pk2>', views.updateQuestion, name="updateQuestion"),
     path('delete_question/<str:pk>/<str:pk2>', views.deleteQuestion, name="deleteQuestion"),
 
+    # unverified rooms
+    path('unverified_rooms/', views.unverifiedRooms, name="unverifiedRooms"),
+    path('approve/<str:pk>', views.approveRoom, name="approveRoom"),
+    path('reject/<str:pk>', views.rejectRoom, name="rejectRoom"),
+
+    # myrooms
+    path('myrooms', views.myRooms, name="myRooms"),
     # path('final_submit/', views.finalSubmit, name="finalSubmit"),
 ]

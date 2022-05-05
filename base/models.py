@@ -9,6 +9,7 @@ class Room(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     # participants=
+    # verified = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 

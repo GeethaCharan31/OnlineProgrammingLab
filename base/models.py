@@ -46,3 +46,5 @@ class Solution(models.Model):
 
     def __str__(self):
         return self.user
+
+# refer this for User model and its attributes -- https://docs.djangoproject.com/en/4.0/ref/contrib/auth/

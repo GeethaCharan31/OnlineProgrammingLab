@@ -27,7 +27,7 @@
                 </form>
                 {% if user.username == 'admin' %}
                 <li class="nav-item">
-                    <a class="nav-link active" href="/unverified_rooms">Verify Rooms</a>
+                    <a class="nav-link active" href="/unverified_rooms" style="color:#d9534f">Verify Rooms</a>
                 </li>
                 {%endif%}
                 <li class="nav-item">
@@ -39,12 +39,13 @@
                         My Account
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="/myprofile">Profile</a></li>
                         <li><a class="dropdown-item" href="/myrooms">My Labs/Contests</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="//{{request.get_host}}/logout">Logout</a></li>
+                        <li><a class="dropdown-item" href="//{{request.get_host}}/logout"
+                               style="color:red">Logout</a></li>
                     </ul>
                 </li>
             </ul>

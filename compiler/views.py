@@ -111,7 +111,7 @@ def viewResponses(request, pk, pk2, pk3):
     else:
         input = solution.input
     output = ""
-    submitFlag = False
+    submitFlag=False
     context = {'question': question, "code": code, "input": input, 'output': output, 'submitFlag': submitFlag}
     return render(request, 'question.html', context)
 

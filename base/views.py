@@ -1,7 +1,11 @@
 from datetime import datetime
 
+from django.core.mail import EmailMessage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+
+from OnlineProgrammingLab import settings
 from .models import Room, Question, Solution
 from .forms import RoomForm, QuestionForm, SolutionForm
 from django.db.models import Q
@@ -25,14 +29,6 @@ def home(request):
     context = {'rooms': rooms, 'room_count': room_count}
     return render(request, "home.html", context)
 
-@login_required(login_url='login')
-def myRooms(request):
-    resultset=Room.objects.filter(host=request.user)
-
-    myroomsFlag=True
-    room_count = resultset.count()
-    context = {'rooms':resultset,'room_count': room_count,'myroomsFlag':myroomsFlag}
-    return render(request, "home.html", context)
 
 @login_required(login_url='login')
 def room(request, pk):
@@ -41,7 +37,6 @@ def room(request, pk):
     context = {'room': room, 'questions': questions}
 
     return render(request, "room.html", context)
-
 
 
 # remove this view as it is moved to compiler app
@@ -284,6 +279,13 @@ def approveRoom(request, pk):
     room.verified = True
     room.save()
 
+    subject = "Online Programming Platform - Room Verification Details"
+    context = {'room': room, }
+    message = render_to_string('mails/approval_mail.html', context)
+    email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [room.host.email])
+    email.fail_silently = True
+    email.send()
+
     msg = " Room " + room.name + " by " + room.host.username + " is approved successfully."
     messages.success(request, msg, extra_tags='info')
 
@@ -291,14 +293,48 @@ def approveRoom(request, pk):
 
 
 def rejectRoom(request, pk):
-    if request.user.username != "admin":
-        return HttpResponse("You can't do this ...")
+    if request.method == "POST":
+        if request.user.username != "admin":
+            return HttpResponse("You can't do this ...")
+
+        room = Room.objects.get(id=pk)
+        room.delete()
+
+        msg = " Room " + room.name + " by " + room.host.username + " is rejected."
+        messages.success(request, msg, extra_tags='danger')
+
+        # mail to user regarding rejection.
+        subject = "Online Programming Platform - Room Verification Details"
+        reason = request.POST['reason']
+        context = {'room': room, 'reason': reason}
+        message = render_to_string('mails/rejection_mail.html', context)
+        email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [room.host.email])
+        email.fail_silently = True
+        email.send()
+
+        return redirect('unverifiedRooms')
 
     room = Room.objects.get(id=pk)
-    room.delete()
+    context = {'room': room}
+    return render(request, 'room_rejection.html', context)
 
-    msg = " Room " + room.name + " by " + room.host.username + " is rejected."
-    messages.success(request, msg, extra_tags='danger')
 
-    return redirect('unverifiedRooms')
+@login_required(login_url='login')
+def myRooms(request):
+    resultset = Room.objects.filter(host=request.user, verified=True)
 
+    unverifiedRooms = Room.objects.filter(host=request.user, verified=False)
+    myroomsFlag = True
+    room_count = resultset.count()
+    context = {'rooms': resultset, 'room_count': room_count, 'unverifiedRooms': unverifiedRooms,
+               'myroomsFlag': myroomsFlag}
+    return render(request, "home.html", context)
+
+
+@login_required(login_url='login')
+def myProfile(request):
+    username = request.user.get_username()  # get username
+    user = User.objects.get(username=username)  # find that user using username
+    resultset = Solution.objects.filter(user=user)  # get all the solutions of that user
+    context = {'solutions': resultset, 'user': user}
+    return render(request, "myprofile.html", context)

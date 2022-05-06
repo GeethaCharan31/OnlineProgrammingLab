@@ -50,24 +50,10 @@
                 <div class="room-tile-host">
                     <h6>Host : {{room.host.username}}</h6>
                 </div>
-                {% if request.user.username == room.host.username or 'admin' %}
-                <!-- Default dropend button -->
-                <div class="room-tile-settings">
-                    <div class="btn-group dropend">
-                        <button type="button" class="btn btn-secondary dropdown-toggle rounded-0"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                            Host Options
-                        </button>
-                        <ul class="dropdown-menu">
-                            <a class="dropdown-item" href="/room_responses/{{room.id}}">Check Responses</a>
-                            <a class="dropdown-item" href="//{{request.get_host}}/create_question/{{room.id}}">Add
-                                Questions</a>
-                            <a class="dropdown-item" href="/update_room/{{room.id}}">Edit Room</a>
-                            <a class="dropdown-item" href="/delete_room/{{room.id}}">Delete Room</a>
-                        </ul>
-                    </div>
-                </div>
+                {% if request.user.username == room.host.username %}
+                    {% include 'host_options_button.html' %}
+                {%elif request.user.username == 'admin'%}
+                    {% include 'host_options_button.html' %}
                 {%endif%}
             </div>
         </div>
@@ -76,7 +62,7 @@
     </div>
 
     <!-- Unverified Rooms of the user -->
-    {% if myroomsFlag %}
+    {% if myroomsFlag and unverifiedRooms %}
     <h4> My Unverified Labs/Contests </h4>
 
     <div>
@@ -98,24 +84,10 @@
                 <div class="room-tile-host">
                     <h6>Host : {{room.host.username}}</h6>
                 </div>
-                {% if request.user.username == room.host.username or 'admin' %}
-                <!-- Default dropend button -->
-                <div class="room-tile-settings">
-                    <div class="btn-group dropend">
-                        <button type="button" class="btn btn-secondary dropdown-toggle rounded-0"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                            Host Options
-                        </button>
-                        <ul class="dropdown-menu">
-                            <a class="dropdown-item" href="/room_responses/{{room.id}}">Check Responses</a>
-                            <a class="dropdown-item" href="//{{request.get_host}}/create_question/{{room.id}}">Add
-                                Questions</a>
-                            <a class="dropdown-item" href="/update_room/{{room.id}}">Edit Room</a>
-                            <a class="dropdown-item" href="/delete_room/{{room.id}}">Delete Room</a>
-                        </ul>
-                    </div>
-                </div>
+                {% if request.user.username == room.host.username %}
+                    {% include 'host_options_button.html' %}
+                {%elif request.user.username == 'admin'%}
+                    {% include 'host_options_button.html' %}
                 {%endif%}
             </div>
         </div>

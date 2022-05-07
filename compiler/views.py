@@ -5,8 +5,10 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 
-# Create your views here.
 from base.models import Question, Room, Solution
+
+from datetime import datetime, timedelta
+from threading import Thread
 
 
 def question(request, pk, pk2):
@@ -32,7 +34,7 @@ def question(request, pk, pk2):
     context = {'question': question, "code": code, "input": input, "output": output, 'submitFlag': submitFlag}
     return render(request, "question.html", context)
 
-
+RUN_TIME_LIMIT=5
 def runCode(request, pk, pk2):
     if 'run' in request.POST:
         if request.method == 'POST':
@@ -47,12 +49,24 @@ def runCode(request, pk, pk2):
                 return a
 
             try:
+                def monitorProgress():
+                    isCompleted = False
+                    start_time = datetime.now()
+                    while not isCompleted:
+                        if datetime.now() > start_time + timedelta(seconds=RUN_TIME_LIMIT):
+                            isCompleted = True
+                            raise RuntimeError("Time Out!!!")
+
+                t = Thread(target=monitorProgress())
+                t.start()
                 orig_stdout = sys.stdout
                 sys.stdout = open('file.txt', 'w')
                 exec(code)
                 sys.stdout.close()
                 sys.stdout = orig_stdout
                 output = open('file.txt', 'r').read()
+            except RuntimeError as re:
+                output = re
             except Exception as e:
                 sys.stdout.close()
                 sys.stdout = orig_stdout
@@ -130,12 +144,24 @@ def runResponse(request, pk, pk2, pk3):
             return a
 
         try:
+            def monitorProgress():
+                isCompleted = False
+                start_time = datetime.now()
+                while not isCompleted:
+                    if datetime.now() > start_time + timedelta(seconds=RUN_TIME_LIMIT):
+                        isCompleted = True
+                        raise RuntimeError("Time Out!!!")
+
+            t = Thread(target=monitorProgress())
+            t.start()
             orig_stdout = sys.stdout
             sys.stdout = open('file.txt', 'w')
             exec(code)
             sys.stdout.close()
             sys.stdout = orig_stdout
             output = open('file.txt', 'r').read()
+        except RuntimeError as re:
+            output = re
         except Exception as e:
             sys.stdout.close()
             sys.stdout = orig_stdout

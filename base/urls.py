@@ -32,4 +32,6 @@ urlpatterns = [
     path('myrooms', views.myRooms, name="myRooms"),
     path('myprofile', views.myProfile, name="myProfile"),
     # path('final_submit/', views.finalSubmit, name="finalSubmit"),
+
+    path('verify_user/<str:pk>', views.verifyUser, name="verifyUser"),
 ]

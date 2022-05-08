@@ -10,6 +10,7 @@ class Room(models.Model):
     description = models.TextField(null=True, blank=True)
     # participants=
     verified = models.BooleanField(default=False)
+    room_password = models.CharField(max_length=20, default="admin123")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -47,4 +48,8 @@ class Solution(models.Model):
     def __str__(self):
         return self.user
 
+class VerifiedUser(models.Model):
+    is_verified = models.BooleanField(default=False)
+    room = models.ForeignKey(Room,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
 # refer this for User model and its attributes -- https://docs.djangoproject.com/en/4.0/ref/contrib/auth/

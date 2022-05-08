@@ -34,7 +34,10 @@ def question(request, pk, pk2):
     context = {'question': question, "code": code, "input": input, "output": output, 'submitFlag': submitFlag}
     return render(request, "question.html", context)
 
-RUN_TIME_LIMIT=5
+
+RUN_TIME_LIMIT = 5
+
+
 def runCode(request, pk, pk2):
     if 'run' in request.POST:
         if request.method == 'POST':
@@ -49,7 +52,7 @@ def runCode(request, pk, pk2):
                 return a
 
             try:
-                def monitorProgress():
+                """ def monitorProgress():
                     isCompleted = False
                     start_time = datetime.now()
                     while not isCompleted:
@@ -58,7 +61,7 @@ def runCode(request, pk, pk2):
                             raise RuntimeError("Time Out!!!")
 
                 t = Thread(target=monitorProgress())
-                t.start()
+                t.start()"""
                 orig_stdout = sys.stdout
                 sys.stdout = open('file.txt', 'w')
                 exec(code)
@@ -94,7 +97,7 @@ def runCode(request, pk, pk2):
                 input = request.POST['input']
                 sol_info = Solution(code=code, user=user, question=question, room=room, input=input)
                 sol_info.save()
-        context = {'room':room}
+        context = {'room': room}
         return render(request, "submitted.html", context)
 
 
@@ -125,7 +128,7 @@ def viewResponses(request, pk, pk2, pk3):
     else:
         input = solution.input
     output = ""
-    submitFlag=False
+    submitFlag = False
     context = {'question': question, "code": code, "input": input, 'output': output, 'submitFlag': submitFlag}
     return render(request, 'question.html', context)
 
@@ -144,16 +147,6 @@ def runResponse(request, pk, pk2, pk3):
             return a
 
         try:
-            def monitorProgress():
-                isCompleted = False
-                start_time = datetime.now()
-                while not isCompleted:
-                    if datetime.now() > start_time + timedelta(seconds=RUN_TIME_LIMIT):
-                        isCompleted = True
-                        raise RuntimeError("Time Out!!!")
-
-            t = Thread(target=monitorProgress())
-            t.start()
             orig_stdout = sys.stdout
             sys.stdout = open('file.txt', 'w')
             exec(code)

@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 
 from OnlineProgrammingLab import settings
-from .models import Room, Question, Solution
+from .models import Room, Question, Solution, VerifiedUser
 from .forms import RoomForm, QuestionForm, SolutionForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -34,6 +34,7 @@ def home(request):
 def room(request, pk):
     room = Room.objects.get(id=pk)
     questions = Question.objects.filter(room=pk)
+
     context = {'room': room, 'questions': questions}
 
     return render(request, "room.html", context)
@@ -56,11 +57,19 @@ def createRoom(request):
     if request.method == "POST":
         name = request.POST.get('roomname')  # name of element in form
         description = request.POST['description']
-
+        room_password = request.POST['roompassword']
         username = request.user.get_username()
         host = User.objects.get(username=username)
 
-        room_info = Room(host=host, name=name, description=description)
+        # admin can directly create room
+        if username == 'admin':
+            room_info = Room(host=host, name=name, description=description, room_password=room_password, verified=True)
+            room_info.save()
+            msg = name + " room is created. "
+            messages.success(request, msg, extra_tags='info')
+            return redirect('home')
+
+        room_info = Room(host=host, name=name, description=description, room_password=room_password)
         room_info.save()
 
         if request.POST['btnradio'] == 'btnradio1':
@@ -85,6 +94,7 @@ def updateRoom(request, pk):
         room = Room.objects.get(id=pk)
         room.name = request.POST.get('roomname')  # name of element in form
         room.description = request.POST['description']
+        room.room_password = request.POST['roompassword']
         room.save()
 
         msg = room.name + " room successfully updated"
@@ -338,3 +348,35 @@ def myProfile(request):
     resultset = Solution.objects.filter(user=user)  # get all the solutions of that user
     context = {'solutions': resultset, 'user': user}
     return render(request, "myprofile.html", context)
+
+
+def verifyUser(request, pk):
+    if request.method == 'POST':
+        room = Room.objects.get(id=pk)
+        if room.room_password == request.POST['room_password']:
+            # room.is_user_verified = True #not correct as only one user set enter correctly
+            username = request.user.get_username()
+            user = User.objects.get(username=username)
+            queryset = VerifiedUser.objects.filter(room=pk, user=user)
+            if not queryset:
+                info = VerifiedUser(room=room, user=user, is_verified=True)
+                info.save()
+
+            msg = " User is successfully authenticated for " + room.name
+            messages.success(request, msg, extra_tags='info')
+
+            return redirect('room', room.id)
+        else:
+            msg = " Incorrect Room password "
+            messages.success(request, msg, extra_tags='danger')
+            return redirect('home')
+    room = Room.objects.get(id=pk)
+    username = request.user.get_username()
+    user = User.objects.get(username=username)
+    queryset = VerifiedUser.objects.filter(room=room, user=user)
+    if queryset:
+        verified = True
+    else:
+        verified = False
+    context = {'verified': verified, 'room': room}
+    return render(request, "room_verification.html", context)

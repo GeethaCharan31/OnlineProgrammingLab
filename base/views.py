@@ -38,7 +38,11 @@ def room(request, pk):
     username = request.user.get_username()
     user = User.objects.get(username=username)
     queryset = VerifiedUser.objects.filter(room=room, user=user)
-    if not queryset:
+    if not queryset and username == 'admin':
+        info = VerifiedUser(room=room, user=user, is_verified=True)
+        info.save()
+
+    elif not queryset:
         return redirect('verifyUser', room.id)
 
     context = {'room': room, 'questions': questions}
@@ -77,6 +81,11 @@ def createRoom(request):
 
         room_info = Room(host=host, name=name, description=description, room_password=room_password)
         room_info.save()
+
+        room = Room.objects.get(name=name)
+        user = User.objects.get(username='admin')
+        info = VerifiedUser(room=room, user=user, is_verified=True)
+        info.save()
 
         if request.POST['btnradio'] == 'btnradio1':
             return redirect('createQuestion', room_info.id)
@@ -382,6 +391,7 @@ def verifyUser(request, pk):
     room = Room.objects.get(id=pk)
     username = request.user.get_username()
     user = User.objects.get(username=username)
+
     queryset = VerifiedUser.objects.filter(room=room, user=user)
     if queryset:
         verified = True

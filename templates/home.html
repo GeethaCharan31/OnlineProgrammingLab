@@ -41,19 +41,10 @@
                 <div class="room-tile-name">
                     <h2>{{room.name}}</h2>
                 </div>
-                {% if request.user.username == room.host.username %}
                 <div class="room-tile-button">
                     <a href="/room/{{room.id}}" class="btn btn-primary rounded-0">Join Now</a>
                 </div>
-                {%elif request.user.username == 'admin'%}
-                <div class="room-tile-button">
-                    <a href="/room/{{room.id}}" class="btn btn-primary rounded-0">Join Now</a>
-                </div>
-                {%else%}
-                <div class="room-tile-button">
-                    <a href="/verify_user/{{room.id}}" class="btn btn-primary rounded-0">Join Now</a>
-                </div>
-                {%endif%}
+
             </div>
 
             <div class="room-tile-2">

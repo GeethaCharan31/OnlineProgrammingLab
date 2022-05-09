@@ -35,6 +35,12 @@ def room(request, pk):
     room = Room.objects.get(id=pk)
     questions = Question.objects.filter(room=pk)
 
+    username = request.user.get_username()
+    user = User.objects.get(username=username)
+    queryset = VerifiedUser.objects.filter(room=room, user=user)
+    if not queryset:
+        return redirect('verifyUser', room.id)
+
     context = {'room': room, 'questions': questions}
 
     return render(request, "room.html", context)

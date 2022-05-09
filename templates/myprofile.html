@@ -58,8 +58,32 @@
             <p style="font-size:14px;"> Account created on {{user.date_joined}}</p>
         </div>
     </div>
+    <div>
     <div class="my_profile2">
-        <h2> My Responses </h2>
+        <h2> Rooms Joined </h2>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Room Title</th>
+                <th scope="col"> link </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for room in roomsjoined %}
+            <tr>
+                <td>{{room.room.name}}</td>
+                <td>
+                    <a class="btn btn-primary btn-sm"
+                       href="//{{request.get_host}}/room/{{room.room.id}}/"
+                       role="button">Go to Room</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="my_profile2">
+        <h2 style="padding-top:20px"> My Responses </h2>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -74,7 +98,7 @@
                 <td>{{sol.question}}</td>
                 <td>{{sol.room}}</td>
                 <td>
-                    <a class="btn btn-primary btn-sm"
+                    <a class="btn btn-info btn-sm"
                        href="//{{request.get_host}}/view_response/{{sol.question.room.id}}/{{sol.question.id}}/{{sol.id}}/"
                        role="button">Check Response</a>
                 </td>
@@ -83,6 +107,7 @@
             </tbody>
         </table>
     </div>
+        </div>
 </div>
 
 

@@ -352,7 +352,10 @@ def myProfile(request):
     username = request.user.get_username()  # get username
     user = User.objects.get(username=username)  # find that user using username
     resultset = Solution.objects.filter(user=user)  # get all the solutions of that user
-    context = {'solutions': resultset, 'user': user}
+
+    roomsjoined = VerifiedUser.objects.filter(user=user)
+
+    context = {'solutions': resultset, 'user': user, 'roomsjoined': roomsjoined}
     return render(request, "myprofile.html", context)
 
 

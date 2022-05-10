@@ -33,7 +33,7 @@ def home(request):
 @login_required(login_url='login')
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    questions = Question.objects.filter(room=pk)
+    questions = Question.objects.filter(room=room)
 
     username = request.user.get_username()
     user = User.objects.get(username=username)
@@ -77,15 +77,22 @@ def createRoom(request):
             room_info.save()
             msg = name + " room is created. "
             messages.success(request, msg, extra_tags='info')
+            if request.POST['btnradio'] == 'btnradio1':
+                return redirect('createQuestion', room_info.id)
             return redirect('home')
 
         room_info = Room(host=host, name=name, description=description, room_password=room_password)
         room_info.save()
 
         room = Room.objects.get(name=name)
-        user = User.objects.get(username='admin')
+        user = User.objects.get(username=username)
         info = VerifiedUser(room=room, user=user, is_verified=True)
         info.save()
+
+        if username != 'admin':
+            user = User.objects.get(username='admin')
+            info = VerifiedUser(room=room, user=user, is_verified=True)
+            info.save()
 
         if request.POST['btnradio'] == 'btnradio1':
             return redirect('createQuestion', room_info.id)

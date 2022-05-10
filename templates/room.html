@@ -1,8 +1,8 @@
 {% extends 'main.html' %}
 
 {% block style %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/room_style.css' %}">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/room_style.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -10,6 +10,9 @@
     .room-container{
         margin:10px;
     }
+
+
+
 </style>
 
 {% for message in messages %}
@@ -24,7 +27,8 @@
         <h2 style="text-align:center;padding:10px;">{{room.name}}</h2>
     </div>
     <div>
-        <h4 style="text-align:center;padding:10px;font-weight:normal"><strong>Description :</strong> {{room.description}}</h4>
+        <h4 style="text-align:center;padding:10px;font-weight:normal"><strong>Description :</strong>
+            {{room.description}}</h4>
         <br>
     </div>
 
@@ -40,28 +44,25 @@
                     <a href="/room/{{room.id}}/{{question.id}}/" class="btn btn-primary rounded-0">Solve</a>
                 </div>
                 {% if request.user == room.host %}
-                <div class="question-tile-settings">
-                <div class="btn-group dropend">
-                    <button type="button" class="btn btn-secondary dropdown-toggle rounded-0" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                        {% load static %}
-                        <img src="{% static 'images/gear.png' %}" width="20px">
-                    </button>
-                    <ul class="dropdown-menu">
-                        <a class="dropdown-item" href="/question_responses/{{room.id}}/{{question.id}}">Check Responses</a>
-                        <a class="dropdown-item" href="/update_question/{{room.id}}/{{question.id}}">Edit Question</a>
-                        <a class="dropdown-item" href="/delete_question/{{room.id}}/{{question.id}}">Delete Question</a>
-                    </ul>
-                </div>
-                    </div>
+                {%include 'host_options_button2.html' %}
+                {%elif request.user.username == 'admin' %}
+                {%include 'host_options_button2.html' %}
                 {%endif%}
             </div>
             <br>
             {% endfor %}
         </div>
+        {% if request.user == room.host %}
         <div style="text-align:center">
-            <a class="btn btn-danger" href="//{{request.get_host}}/create_question/{{room.id}}" role="button">Add More Questions</a>
+            <a class="btn btn-danger" href="//{{request.get_host}}/create_question/{{room.id}}" role="button">Add More
+                Questions</a>
         </div>
+        {%elif request.user.username == 'admin' %}
+        <div style="text-align:center">
+            <a class="btn btn-danger" href="//{{request.get_host}}/create_question/{{room.id}}" role="button">Add More
+                Questions</a>
+        </div>
+        {%endif%}
     </div>
 </div>
 {% endblock %}

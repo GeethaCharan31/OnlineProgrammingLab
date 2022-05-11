@@ -1,1 +1,1 @@
-Not-Palindrome
+Not an palindrome

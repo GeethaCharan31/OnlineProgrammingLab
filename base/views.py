@@ -26,7 +26,18 @@ def home(request):
 
     room_count = rooms.count()
 
-    context = {'rooms': rooms, 'room_count': room_count}
+    # joined
+    username = request.user.get_username()
+    user = User.objects.get(username=username)
+    special = []
+    for i in rooms:
+        if len(VerifiedUser.objects.filter(room=i, user=user)) == 1:
+            special.append(True)
+        else:
+            special.append(False)
+
+    zip_context = zip(rooms, special)
+    context = {'rooms': rooms, 'room_count': room_count, 'zip': zip_context}
     return render(request, "home.html", context)
 
 
@@ -37,6 +48,16 @@ def room(request, pk):
 
     username = request.user.get_username()
     user = User.objects.get(username=username)
+
+    # for solved button
+    special = []
+    for i in questions:
+        if len(Solution.objects.filter(question=i, user=user)) == 1:
+            special.append(True)
+        else:
+            special.append(False)
+
+    # print(special)
     queryset = VerifiedUser.objects.filter(room=room, user=user)
     if not queryset and username == 'admin':
         info = VerifiedUser(room=room, user=user, is_verified=True)
@@ -45,7 +66,8 @@ def room(request, pk):
     elif not queryset:
         return redirect('verifyUser', room.id)
 
-    context = {'room': room, 'questions': questions}
+    zip_context = zip(questions, special)
+    context = {'room': room, 'questions': questions, 'zip': zip_context}
 
     return render(request, "room.html", context)
 

@@ -33,7 +33,7 @@
     {%endif%}
 
     <div>
-        {% for room in rooms %}
+        {% for room,joined in zip %}
 
         <div class="room-tile">
 
@@ -41,9 +41,18 @@
                 <div class="room-tile-name">
                     <h2>{{room.name}}</h2>
                 </div>
+                {% if joined %}
                 <div class="room-tile-button">
-                    <a href="/room/{{room.id}}" class="btn btn-primary rounded-0">Join Now</a>
+                    <a href="/room/{{room.id}}" class="btn btn-primary rounded-0">Joined</a>
                 </div>
+
+                {%else%}
+                <div class="room-tile-button">
+                    <a href="/room/{{room.id}}" class="btn btn-info rounded-0">Join Now</a>
+                </div>
+
+                {%endif%}
+
 
             </div>
 
@@ -76,7 +85,7 @@
                     <h2>{{room.name}}</h2>
                 </div>
                 <div class="room-tile-button">
-                    <a href="/room/{{room.id}}" class="btn btn-info rounded-0">Join Now</a>
+                    <a href="/room/{{room.id}}" class="btn btn-info rounded-0">Open</a>
                 </div>
 
             </div>

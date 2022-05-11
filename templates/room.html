@@ -34,15 +34,22 @@
 
     <div>
         <div>
-            {% for question in questions %}
+            {% for question,solved in zip %}
 
             <div class="question-tile">
                 <div class="question-tile-name">
                     <h3>{{question.question_title}}</h3>
                 </div>
+                {% if solved %}
                 <div class="question-tile-button">
-                    <a href="/room/{{room.id}}/{{question.id}}/" class="btn btn-primary rounded-0">Solve</a>
+                    <a href="/room/{{room.id}}/{{question.id}}/" class="btn btn-primary rounded-0">Solved</a>
                 </div>
+                {%else%}
+                <div class="question-tile-button">
+                    <a href="/room/{{room.id}}/{{question.id}}/" class="btn btn-info rounded-0">Solve</a>
+                </div>
+
+                {%endif%}
                 {% if request.user == room.host %}
                 {%include 'host_options_button2.html' %}
                 {%elif request.user.username == 'admin' %}

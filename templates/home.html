@@ -26,17 +26,12 @@
 {% endfor %}
 
 <div class="home1">
-    {% if myroomsFlag %}
-    <h4> My Labs/Contests </h4>
-    {%else%}
-    <h4>{{room_count}} labs/contests available</h4>
+    {% if myroomsFlag %} <h4> My Labs/Contests </h4>
+    {%else%} <h4>{{room_count}} labs/contests available</h4>
     {%endif%}
-
     <div>
         {% for room,joined in zip %}
-
         <div class="room-tile">
-
             <div class="room-tile-1">
                 <div class="room-tile-name">
                     <h2>{{room.name}}</h2>
@@ -45,15 +40,11 @@
                 <div class="room-tile-button">
                     <a href="/room/{{room.id}}" class="btn btn-primary rounded-0">Joined</a>
                 </div>
-
                 {%else%}
                 <div class="room-tile-button">
                     <a href="/room/{{room.id}}" class="btn btn-info rounded-0">Join Now</a>
                 </div>
-
                 {%endif%}
-
-
             </div>
 
             <div class="room-tile-2">

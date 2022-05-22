@@ -14,19 +14,17 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 
-# Create your views here.
+
 @login_required(login_url='login')
 def home(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''  # for searching
-    # rooms = Room.objects.filter(name__icontains=q)
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
     rooms = Room.objects.filter(
         Q(name__icontains=q), verified=True
-        # Q(description__icontains=q) #add search by user too
     )
 
     room_count = rooms.count()
 
-    # joined
+    # checking for joined status
     username = request.user.get_username()
     user = User.objects.get(username=username)
     special = []
@@ -35,8 +33,8 @@ def home(request):
             special.append(True)
         else:
             special.append(False)
-
     zip_context = zip(rooms, special)
+
     context = {'rooms': rooms, 'room_count': room_count, 'zip': zip_context}
     return render(request, "home.html", context)
 
@@ -379,9 +377,22 @@ def myRooms(request):
 
     unverifiedRooms = Room.objects.filter(host=request.user, verified=False)
     myroomsFlag = True
+
+    username = request.user.get_username()
+    user = User.objects.get(username=username)
+    special = []
+    for i in resultset:
+        if len(VerifiedUser.objects.filter(room=i, user=user)) == 1:
+            special.append(True)
+        else:
+            special.append(False)
+
+    zip_context = zip(resultset, special)
+
+
     room_count = resultset.count()
     context = {'rooms': resultset, 'room_count': room_count, 'unverifiedRooms': unverifiedRooms,
-               'myroomsFlag': myroomsFlag}
+               'myroomsFlag': myroomsFlag,'zip': zip_context}
     return render(request, "home.html", context)
 
 
